@@ -1,40 +1,26 @@
 
-import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import axios from 'axios';
+import React, {useState} from 'react'
 import {Container}  from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { logInUser } from '../api.js';
-const { REACT_APP_BASE_URL } = process.env;
+ import { useNavigate } from 'react-router-dom';
 
- 
+
 const LogIn = () => {
-
-    const[email,setEmail] = useState('')
-    const [password,setPassword] =useState('')
-const handleSubmit = (e) =>{
-  e.preventDefault()
-  console.log(email,password);
-  logInUser(email,password)
+const navigate = useNavigate()
+  const[email,setEmail] = useState('')
+  const [password,setPassword] =useState('')
+  
+  const handleSubmit = () =>{
+  //e.preventDefault()
+  const data ={
+    email:email,
+    password:password
+  }
+  axios.post('/api/v1/auth/login', data)
+  navigate('/courses')
 }
-// const logInUser = async () => {
-//   //e.preventDefault()
-// const data ={
-//   email:email,
-//   password:password
-// }
-// console.log(data);
-// try{
-//  const data = await axios.post(`${REACT_APP_BASE_URL}/api/v1/auth/login`,data)
-//  console.log("data",data);
-// return data
-// }catch(error){
-//   console.log("error",error);
-// return error
-
-// }
-// }
-
 
   return (
     <>
@@ -64,7 +50,7 @@ const handleSubmit = (e) =>{
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Check me out" />
       </Form.Group>
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
+      <Button variant="primary" type="submit">
         Submit
       </Button>
     </Form>
